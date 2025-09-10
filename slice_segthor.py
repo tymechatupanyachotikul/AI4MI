@@ -81,7 +81,7 @@ def slice_patient(id_: str, dest_path: Path, source_path: Path, shape: tuple[int
     assert ct_path.exists()
 
     # --------- FILL FROM HERE -----------
-    ct = nibabel.load(id_path / ct_path)
+    ct = nibabel.load(ct_path)
     x,y,z = ct.shape
     dx, dy, dz = ct.header.get_zooms()
     ct_img = ct.get_fdata().astype(ct.get_data_dtype())
@@ -111,7 +111,7 @@ def slice_patient(id_: str, dest_path: Path, source_path: Path, shape: tuple[int
         ct_img_slice.save(dest_path / "img" / f"{id_}_{i:04d}.png")
 
         if not test_mode:
-            gt_slice = skimage.transform.resize(gt_img[:, :, i], shape, anti_aliasing=True, preserve_range=True).astype(ct_norm.dtype) * 63
+            gt_slice = skimage.transform.resize(gt_img[:, :, i], shape, order=0, anti_aliasing=False, preserve_range=True).astype(ct_norm.dtype) * 63
 
             assert gt_slice.dtype == np.uint8, gt_slice.dtype
             assert set(np.unique(gt_slice)) <= set([0, 63, 126, 189, 252]), np.unique(gt_slice)
