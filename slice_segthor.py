@@ -90,7 +90,7 @@ def slice_patient(id_: str, dest_path: Path, source_path: Path, shape: tuple[int
     sanity_ct(ct_img, x, y, z, dx, dy, dz)
 
     if not test_mode:
-        gt = nibabel.load(id_path / "GT.nii.gz")
+        gt = nibabel.load(id_path / "GT_fixed.nii.gz")
         gt_img = gt.get_fdata().astype(gt.get_data_dtype())
 
         sanity_gt(gt_img, ct_img)
